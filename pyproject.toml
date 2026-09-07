@@ -1,0 +1,27 @@
+[project]
+name = "splots"
+version = "0.0.1"
+authors = [
+  { name="vddiazz", email="vddiazz@proton.me" },
+]
+description = "A python package for plotting soliton data"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+    "matplotlib>=3.9.4",
+    "numpy>=2.0.2",
+    "pyqt6>=6.10.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/vddiazz/splots"
+
+[build-system]
+requires = ["uv_build >= 0.12.5, <0.13.0"]
+build-backend = "uv_build"
