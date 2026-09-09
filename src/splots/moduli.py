@@ -26,6 +26,17 @@ def plot_moduli(moduli_labels:list[str], path:str, model:str, moduli:str, vin:np
         
         M = [a,da,b,db]
 
+    if moduli == "pR2":
+        a   = np.load(f"{path}/a_v=-{vin}.npy")
+        da  = np.load(f"{path}/da_v=-{vin}.npy")
+        c1   = np.load(f"{path}/c1_v=-{vin}.npy")
+        dc1  = np.load(f"{path}/dc1_v=-{vin}.npy")
+        c2   = np.load(f"{path}/c2_v=-{vin}.npy")
+        dc2  = np.load(f"{path}/dc2_v=-{vin}.npy")
+        
+        M = [a,da,c1,dc1,c2,dc2]
+
+
     # time axis
     T = np.arange(0,len(M[0]),1)
     
