@@ -13,11 +13,11 @@ mpl.use("QtAgg")
 
 ##########
 
-def plot_origin_field(path:str, model:str, moduli:str, dt:np.float64) -> None:
+def plot_origin_field(path:str, typ:str, model:str, moduli:str, dt:np.float64, dx:np.float64) -> None:
     
     # import data   
     jump = 10 
-    fs  = np.load(f"{path}/kak_origin_vals_fr_{model}_{moduli}_dt={dt}.npy").T[::jump,:]
+    fs  = np.load(f"{path}/kak_origin_vals_fr_{model}_{moduli}_dt={dt}_dx={dx}.npy").T[::jump,:]
     
     # fill nan with 1
     fs  = np.nan_to_num(fs, nan=1.0)
@@ -41,11 +41,11 @@ def plot_origin_field(path:str, model:str, moduli:str, dt:np.float64) -> None:
  
     yoriginal   = np.linspace(0, len(fs[:,0]), len(fs[:,0])+1)
     yrescaled   = np.linspace(0, tf, len(fs[:,0])+1)
-    yticks      = [0, tf*1/5., tf*2/5., tf*3/5., tf*4/5., tf]
+    yticks      = [int(0), int(tf*1/5.), int(tf*2/5.), int(tf*3/5.), int(tf*4/5.), int(tf)]
     ytick_pos   = [np.argmin(np.abs(yrescaled - val)) for val in yticks]
     
     # figure
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(10, 5))
 
     plt.minorticks_on()
     

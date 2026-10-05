@@ -13,29 +13,38 @@ mpl.use("QtAgg")
 
 ##########
 
-def plot_moduli(moduli_labels:list[str], path:str, model:str, moduli:str, vin:np.float64, dt:np.float64) -> None:
+def plot_moduli(moduli_labels:list[str], path:str, model:str, moduli:str, vin:np.float64, dt:np.float64, dx:np.float64) -> None:
 
     colors = ["r","k","g","b","y","m"]
 
     # load data
     if moduli == "aB":
-        a   = np.load(f"{path}/a_v=-{vin}.npy")
-        da  = np.load(f"{path}/da_v=-{vin}.npy")
-        b   = np.load(f"{path}/b_v=-{vin}.npy")
-        db  = np.load(f"{path}/db_v=-{vin}.npy")
+        a   = np.load(f"{path}/a_v=-{vin}_dt={dt}_dx={dx}.npy")
+        da  = np.load(f"{path}/da_v=-{vin}_dt={dt}_dx={dx}.npy")
+        b   = np.load(f"{path}/b_v=-{vin}_dt={dt}_dx={dx}.npy")
+        db  = np.load(f"{path}/db_v=-{vin}_dt={dt}_dx={dx}.npy")
         
         M = [a,da,b,db]
 
     if moduli == "pR2":
-        a   = np.load(f"{path}/a_v=-{vin}.npy")
-        da  = np.load(f"{path}/da_v=-{vin}.npy")
-        c1   = np.load(f"{path}/c1_v=-{vin}.npy")
-        dc1  = np.load(f"{path}/dc1_v=-{vin}.npy")
-        c2   = np.load(f"{path}/c2_v=-{vin}.npy")
-        dc2  = np.load(f"{path}/dc2_v=-{vin}.npy")
-        
+        a   = np.load(f"{path}/a_v=-{vin}_dt={dt}_dx={dx}.npy")
+        da  = np.load(f"{path}/da_v=-{vin}_dt={dt}_dx={dx}.npy")
+        c1   = np.load(f"{path}/c1_v=-{vin}_dt={dt}_dx={dx}.npy")
+        dc1  = np.load(f"{path}/dc1_v=-{vin}_dt={dt}_dx={dx}.npy")
+        c2   = np.load(f"{path}/c2_v=-{vin}_dt={dt}_dx={dx}.npy")
+        dc2  = np.load(f"{path}/dc2_v=-{vin}_dt={dt}_dx={dx}.npy")
+
         M = [a,da,c1,dc1,c2,dc2]
 
+    if moduli == "mpR2":
+        a   = np.load(f"{path}/a_v=-{vin}_dt={dt}_dx={dx}.npy")
+        da  = np.load(f"{path}/da_v=-{vin}_dt={dt}_dx={dx}.npy")
+        c1   = np.load(f"{path}/c1_v=-{vin}_dt={dt}_dx={dx}.npy")
+        dc1  = np.load(f"{path}/dc1_v=-{vin}_dt={dt}_dx={dx}.npy")
+        c2   = np.load(f"{path}/c2_v=-{vin}_dt={dt}_dx={dx}.npy")
+        dc2  = np.load(f"{path}/dc2_v=-{vin}_dt={dt}_dx={dx}.npy")
+        
+        M = [a,da,c1,dc1,c2,dc2]
 
     # time axis
     T = np.arange(0,len(M[0]),1)
