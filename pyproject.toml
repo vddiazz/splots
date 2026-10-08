@@ -17,6 +17,7 @@ dependencies = [
     "matplotlib>=3.9.4",
     "numpy>=2.0.2",
     "pyqt6>=6.10.2",
+    "tqdm>=4.70.1",
 ]
 
 [project.urls]

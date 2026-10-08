@@ -80,7 +80,7 @@ def plot_gamma_comp(path:str, model:str, moduli:str, dt:np.float64) -> None:
     xoriginal   = np.linspace(0, len(vs), len(vs)+1)
     xrescaled   = np.linspace(0.1, 0.3, len(vs)+1)
     xticks      = [0.1, 0.15, 0.2, 0.25, 0.3]
-    xtick_pos   = [np.argmin(np.abs(xrescaled - val)) for val in xticks]
+    xtick_pos   = [np.argmin(np.abs(vs - val)) for val in xticks]
     
     # y axis format
     t0  = 0.
@@ -117,3 +117,118 @@ def plot_gamma_comp(path:str, model:str, moduli:str, dt:np.float64) -> None:
     plt.colorbar()
     plt.tight_layout()
     plt.show()
+
+def plot_a_vals(path:str, typ:str, model:str, moduli:str, dt:np.float64, dx:np.float64) -> None:
+     
+    jump = 10
+
+    # x axis format
+    v_start = 0.1
+    v_stop  = 0.3
+    step    = 0.0005
+    num     = int(round((v_stop - v_start) / step))
+    vs      = np.round(np.linspace(v_start, v_start + step * (num - 1), num),4)
+
+    xoriginal   = np.linspace(0, len(vs), len(vs)+1)
+    xrescaled   = np.linspace(0.1, 0.3, len(vs)+1)
+    xticks      = [0.1, 0.15, 0.2, 0.25, 0.3]
+    xtick_pos   = [np.argmin(np.abs(vs - val)) for val in xticks]
+    
+    # y axis format
+    t0  = 0.
+    tf  = 150.
+    N   = int(tf/dt)
+ 
+    yoriginal   = np.linspace(0, int(N/jump), int(N/jump)+1)
+    yrescaled   = np.linspace(0, tf, int(N/jump)+1)
+    yticks      = [int(0), int(tf*1/5.), int(tf*2/5.), int(tf*3/5.), int(tf*4/5.), int(tf)]
+    ytick_pos   = [np.argmin(np.abs(yrescaled - val)) for val in yticks]
+    
+    # import data   
+    a_vals = np.zeros((num,int(N/jump)))
+
+    for idx,v in enumerate(vs):
+        a_temp = np.load(f"{path}/a_v=-{v}_dt={dt}_dx={dx}.npy")[::jump]
+
+        a_vals[idx,:] = a_temp
+
+    # fill nan with 12
+    a_vals  = np.nan_to_num(a_vals, nan=12.)
+
+    # figure
+    plt.figure(figsize=(10, 5))
+
+    plt.minorticks_on()
+    
+    plt.xticks(xtick_pos, xticks)
+    plt.yticks(ytick_pos, yticks)
+   
+    plt.xlim([0,num]) 
+    plt.ylim([0,N/jump])
+
+    plt.xlabel(r'$v_\mathrm{in}$')
+    plt.ylabel(r'$t$')
+    plt.title(f'$a(t)$ for {moduli}')
+    
+    plt.imshow(a_vals.T, vmin=-1.5, vmax=12., aspect='auto', origin='lower',  cmap='Spectral')
+    plt.colorbar()
+    plt.tight_layout()
+    plt.show()
+
+def plot_da_vals(path:str, typ:str, model:str, moduli:str, dt:np.float64, dx:np.float64) -> None:
+     
+    jump = 10
+
+    # x axis format
+    v_start = 0.1
+    v_stop  = 0.3
+    step    = 0.0005
+    num     = int(round((v_stop - v_start) / step))
+    vs      = np.round(np.linspace(v_start, v_start + step * (num - 1), num),4)
+
+    xoriginal   = np.linspace(0, len(vs), len(vs)+1)
+    xrescaled   = np.linspace(0.1, 0.3, len(vs)+1)
+    xticks      = [0.1, 0.15, 0.2, 0.25, 0.3]
+    xtick_pos   = [np.argmin(np.abs(xrescaled - val)) for val in xticks]
+    
+    # y axis format
+    t0  = 0.
+    tf  = 150.
+    N   = int(tf/dt)
+ 
+    yoriginal   = np.linspace(0, int(N/jump), int(N/jump)+1)
+    yrescaled   = np.linspace(0, tf, int(N/jump)+1)
+    yticks      = [int(0), int(tf*1/5.), int(tf*2/5.), int(tf*3/5.), int(tf*4/5.), int(tf)]
+    ytick_pos   = [np.argmin(np.abs(yrescaled - val)) for val in yticks]
+    
+    # import data   
+    da_vals = np.zeros((num,int(N/jump)))
+
+    for idx,v in enumerate(vs):
+        da_temp = np.load(f"{path}/b_v=-{v}_dt={dt}_dx={dx}.npy")[::jump]
+
+        da_vals[idx,:] = da_temp
+
+    # figure
+    plt.figure(figsize=(10, 5))
+
+    plt.minorticks_on()
+    
+    plt.xticks(xtick_pos, xticks)
+    plt.yticks(ytick_pos, yticks)
+   
+    plt.xlim([0,num]) 
+    plt.ylim([0,N/jump])
+
+    plt.xlabel(r'$v_\mathrm{in}$')
+    plt.ylabel(r'$t$')
+    plt.title(f'$v(t)$ for {moduli}')
+    
+    plt.imshow(da_vals.T, vmin=-1.5, vmax=1.5, aspect='auto', origin='lower',  cmap='Spectral')
+    plt.colorbar()
+    plt.tight_layout()
+    plt.show()
+
+#def plot_ff_origin_field(path:str, model:str, dt:np.float64, dx:np.float64) -> None:
+  
+    # get from ff_fractal_plot.py

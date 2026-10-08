@@ -26,6 +26,30 @@ def plot_moduli(moduli_labels:list[str], path:str, model:str, moduli:str, vin:np
         
         M = [a,da,b,db]
 
+    if moduli == "maB":
+        a   = np.load(f"{path}/a_v=-{vin}_dt={dt}_dx={dx}.npy")
+        da  = np.load(f"{path}/da_v=-{vin}_dt={dt}_dx={dx}.npy")
+        b   = np.load(f"{path}/b_v=-{vin}_dt={dt}_dx={dx}.npy")
+        db  = np.load(f"{path}/db_v=-{vin}_dt={dt}_dx={dx}.npy")
+        
+        M = [a,da,b,db]
+
+    if moduli == "pR":
+        a   = np.load(f"{path}/a_v=-{vin}_dt={dt}_dx={dx}.npy")
+        da  = np.load(f"{path}/da_v=-{vin}_dt={dt}_dx={dx}.npy")
+        c1   = np.load(f"{path}/b_v=-{vin}_dt={dt}_dx={dx}.npy")
+        dc1  = np.load(f"{path}/db_v=-{vin}_dt={dt}_dx={dx}.npy")
+        
+        M = [a,da,c1,dc1]
+
+    if moduli == "mpR":
+        a   = np.load(f"{path}/a_v=-{vin}_dt={dt}_dx={dx}.npy")
+        da  = np.load(f"{path}/da_v=-{vin}_dt={dt}_dx={dx}.npy")
+        c1   = np.load(f"{path}/b_v=-{vin}_dt={dt}_dx={dx}.npy")
+        dc1  = np.load(f"{path}/db_v=-{vin}_dt={dt}_dx={dx}.npy")
+        
+        M = [a,da,c1,dc1]
+
     if moduli == "pR2":
         a   = np.load(f"{path}/a_v=-{vin}_dt={dt}_dx={dx}.npy")
         da  = np.load(f"{path}/da_v=-{vin}_dt={dt}_dx={dx}.npy")
@@ -75,3 +99,64 @@ def plot_moduli(moduli_labels:list[str], path:str, model:str, moduli:str, vin:np
     # plot
     plt.legend(facecolor='white', edgecolor='black', fancybox=False)
     plt.show()
+
+def plot_vout(path:str, typ:str, model:str, moduli:str, dt:np.float64, dx:np.float64) -> list[np.float64]:
+
+    v_start = 0.1
+    v_stop = 0.3
+    step = 0.0005
+    num = int(round((v_stop - v_start) / step))
+    vs = np.round(np.linspace(v_start, v_start + step * (num - 1), num),4)
+
+    t0 = 0.
+    tf = 150.
+    N = int(tf/dt)
+
+    #
+
+    fs = np.load(f"{path}/kak_origin_vals_{typ}_{model}_{moduli}_dt={dt}_dx={dx}.npy")
+
+    vouts = []
+    for idx,vin in enumerate(vs):
+        a = np.load(f"{path}/a_v=-{vin}_dt={dt}_dx={dx}.npy")
+        v = np.load(f"{path}/da_v=-{vin}_dt={dt}_dx={dx}.npy")
+
+        idx_max = next((i for i, x in enumerate(a) if x >= 12), len(a))
+
+        v_sect = v[idx_max-50000:idx_max] # take big enough range!
+
+        if max(abs(v_sect)) > 0.35:
+            vout = 0.
+        else:
+            vout = abs(np.average(v_sect))
+
+        vouts.append(float(vout))
+
+    # plot
+
+    plt.figure(figsize=(10, 2.5))
+    plt.minorticks_on()
+
+    plt.xlabel(r'$v_\mathrm{in}$')
+    plt.ylabel(r'$v_\mathrm{out}$')
+    plt.title(f'{moduli}')
+
+    plt.xlim([0.1,0.3])
+    plt.ylim([0.,0.4])
+
+    #
+
+    plt.plot(vs,vouts,"r-")
+
+    #
+
+    R = np.arange(0.1,0.3,0.0005)
+
+    plt.plot(R,R,"k--")
+
+    #
+
+    plt.tight_layout()
+    plt.show()
+
+    return vouts
