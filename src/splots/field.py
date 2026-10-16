@@ -232,3 +232,71 @@ def plot_da_vals(path:str, typ:str, model:str, moduli:str, dt:np.float64, dx:np.
 #def plot_ff_origin_field(path:str, model:str, dt:np.float64, dx:np.float64) -> None:
   
     # get from ff_fractal_plot.py
+
+##########
+
+def ff_moduli_extract(path:str, model:str, vin:np.float64, dt:np.float64, dx:np.float64) -> None:
+    
+    tf = 150.
+
+    # import data   
+    f  = np.load(f"{path}/kak_ff_{model}_v={vin}.npy")
+
+    X = np.arange(-15,15,dx)
+
+    T = np.arange(0.,tf,dt)
+
+    tol = 1e-2
+
+    # energy
+    Dx = np.zeros((len(X),len(T)))
+    for i in range(1,len(X)-1):
+        for j in range(len(T)):
+            Dx[i,j] = (f[i+1,j]-f[i-1,j])/(2*dx)
+
+    Dt = np.zeros((len(X),len(T)))
+    for i in range(len(X)):
+        for j in range(1,len(T)-1):
+            Dt[i,j] = (f[i,j+1]-f[i,j-1])/(2*dt)
+
+    E = np.zeros((len(X),len(T)))
+    for i in range(1,len(X)-1):
+        for j in range(1,len(T)-1):
+            E[i,j] = 0.5*Dt[i,j]**2 - 0.5*Dx[i,j]**2 + (1-f[i,j]**2)**2
+
+    # separation
+    a = np.zeros(len(T))
+
+    for t in range(len(T)):
+        indices_a = np.where(np.abs(f[:,t]) < tol)[0]
+        if len(indices_a) == 2:
+            a[t] = abs(X[indices_a[0]] - X[indices_a[1]])/2.
+        else:        
+            a[t] = np.nan
+
+    # velocity   
+    v = np.zeros(len(T))    
+
+    for t in range(1,len(T)-1):
+        v[t] = (a[t+1]-a[t-1])/2*dt
+
+    # figure
+    plt.figure(figsize=(10, 5))
+
+    plt.minorticks_on()
+    
+    plt.xlim([0,tf]) 
+    plt.ylim([-1.5,10.5])
+
+    plt.xlabel(r'$t$')
+    plt.ylabel(r'Moduli')
+    
+    plt.plot(T,a,'r.',label=r"$a(t)$")
+    plt.plot(T,v,'k.',label=r"$\dot{a}(t)$")
+    plt.tight_layout()
+    plt.show()
+
+    print(a)
+    print(v)
+
+
