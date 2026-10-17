@@ -1,21 +1,17 @@
 # moduli.py
 
 import numpy as np
+
 import matplotlib as mpl
-import matplotlib.pyplot as plt
-
-from matplotlib import rc
-
-rc('font', **{'family': 'serif', 'serif': ['Computer Modern'], 'size': 12})
-rc('text', usetex=True)
-
 mpl.use("QtAgg")
+import matplotlib.pyplot as plt
 
 ##########
 
 def plot_moduli(moduli_labels:list[str], path:str, model:str, moduli:str, vin:np.float64, dt:np.float64, dx:np.float64) -> None:
 
-    colors = ["r","k","g","b","y","m"]
+    #colors = ['#865049','#63727F','#4E8D7B','#CDC5A8','#E4AC56','#C9AD90']
+    colors = ["r","k","b","g","y","c"]    
 
     # load data
     if moduli == "aB":
@@ -75,7 +71,7 @@ def plot_moduli(moduli_labels:list[str], path:str, model:str, moduli:str, vin:np
     
     # plots
     for i,Mi in enumerate(M):
-        plt.plot(T,Mi,f'{colors[i]}-',label=fr"${moduli_labels[i]}$")
+        plt.plot(T,Mi,color=f'{colors[i]}',linestyle='-',label=fr"${moduli_labels[i]}$")
 
     plt.title(f"$v_\mathrm{{in}} = {vin}$")
  
@@ -86,7 +82,7 @@ def plot_moduli(moduli_labels:list[str], path:str, model:str, moduli:str, vin:np
     
     xoriginal = np.linspace(0, N, N+1)
     xrescaled = np.linspace(0, N*dt, N+1)
-    xticks = [0, N*dt*1/5, N*dt*2/5, N*dt*3/5, N*dt*4/5, N*dt]
+    xticks = [0, int(N*dt*1/5), int(N*dt*2/5), int(N*dt*3/5), int(N*dt*4/5), int(N*dt)]
     xtick_pos = [np.argmin(np.abs(xrescaled - val)) for val in xticks]
     plt.minorticks_on()
     plt.xticks(xtick_pos, xticks)

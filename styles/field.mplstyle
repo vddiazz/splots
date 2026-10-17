@@ -1,0 +1,54 @@
+figure.facecolor: 1,1,1
+axes.facecolor: 1,1,1
+savefig.facecolor: 1,1,1
+savefig.edgecolor: 1,1,1
+
+text.color: 0,0,0
+axes.labelcolor: 0,0,0
+xtick.color: 0,0,0
+ytick.color: 0,0,0
+axes.edgecolor: 0,0,0
+
+font.family: serif
+font.serif: Computer Modern
+font.size: 12
+text.usetex: True
+
+axes.titlesize: 14
+axes.titleweight: normal
+axes.labelsize: 12
+axes.titlecolor: 0.224, 0.227, 0.208
+
+axes.linewidth: 0.9
+axes.grid: False
+axes.axisbelow: True
+grid.color: 0.741, 0.706, 0.635
+grid.linestyle: --
+grid.linewidth: 0.45
+grid.alpha: 0.65
+
+xtick.labelsize: 11
+ytick.labelsize: 11
+xtick.top: False
+ytick.right: False
+xtick.direction: out
+ytick.direction: out
+xtick.major.size: 4
+ytick.major.size: 4
+xtick.major.pad: 5
+ytick.major.pad: 5
+xtick.major.width: 0.8
+ytick.major.width: 0.8
+
+lines.linewidth: 1.1
+lines.markersize: 5
+lines.markeredgewidth: 0.8
+
+legend.frameon: True
+legend.edgecolor: 0,0,0
+legend.facecolor: 1,1,1
+legend.framealpha: 1.0
+legend.fancybox: False
+legend.fontsize: 10
+
+figure.dpi: 120
