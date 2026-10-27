@@ -11,7 +11,8 @@ import matplotlib.pyplot as plt
 def plot_moduli(moduli_labels:list[str], path:str, model:str, moduli:str, vin:np.float64, dt:np.float64, dx:np.float64) -> None:
 
     #colors = ['#865049','#63727F','#4E8D7B','#CDC5A8','#E4AC56','#C9AD90']
-    colors = ["r","k","b","g","y","c"]    
+    colors = ['#A80000','#001852','#00801A','#E19F05','#3DB0CB','#663F39']
+    #colors = ["r","k","b","g","y","c"]    
 
     # load data
     if moduli == "aB":
@@ -57,6 +58,16 @@ def plot_moduli(moduli_labels:list[str], path:str, model:str, moduli:str, vin:np
         M = [a,da,c1,dc1,c2,dc2]
 
     if moduli == "mpR2":
+        a   = np.load(f"{path}/a_v=-{vin}_dt={dt}_dx={dx}.npy")
+        da  = np.load(f"{path}/da_v=-{vin}_dt={dt}_dx={dx}.npy")
+        c1   = np.load(f"{path}/c1_v=-{vin}_dt={dt}_dx={dx}.npy")
+        dc1  = np.load(f"{path}/dc1_v=-{vin}_dt={dt}_dx={dx}.npy")
+        c2   = np.load(f"{path}/c2_v=-{vin}_dt={dt}_dx={dx}.npy")
+        dc2  = np.load(f"{path}/dc2_v=-{vin}_dt={dt}_dx={dx}.npy")
+        
+        M = [a,da,c1,dc1,c2,dc2]
+
+    if moduli == "mmpR2":
         a   = np.load(f"{path}/a_v=-{vin}_dt={dt}_dx={dx}.npy")
         da  = np.load(f"{path}/da_v=-{vin}_dt={dt}_dx={dx}.npy")
         c1   = np.load(f"{path}/c1_v=-{vin}_dt={dt}_dx={dx}.npy")

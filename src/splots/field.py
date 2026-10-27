@@ -13,7 +13,7 @@ def plot_origin_field(path:str, typ:str, model:str, moduli:str, dt:np.float64, d
     # import data   
     jump = 10 
     fs  = np.load(f"{path}/kak_origin_vals_fr_{model}_{moduli}_dt={dt}_dx={dx}.npy").T[::jump,:]
-    
+   
     # fill nan with 1
     fs  = np.nan_to_num(fs, nan=1.0)
 
@@ -293,5 +293,60 @@ def ff_moduli_extract(path:str, model:str, vin:np.float64, dt:np.float64, dx:np.
 
     print(a)
     print(v)
+
+
+def plot_origin_field_subtract(path1:str, typ1:str, model1:str, moduli1:str, dt1:np.float64, dx1:np.float64, path2:str, typ2:str, model2:str, moduli2:str, dt2:np.float64, dx2:np.float64) -> None:
+    
+    # import data   
+    jump = 10 
+    fs1  = np.load(f"{path1}/kak_origin_vals_{typ1}_{model1}_{moduli1}_dt={dt1}_dx={dx1}.npy").T[::jump,:]
+    fs2  = np.load(f"{path2}/kak_origin_vals_{typ2}_{model2}_{moduli2}_dt={dt2}_dx={dx2}.npy").T[::jump,:]
+
+    # fill nan with 1
+    fs1  = np.nan_to_num(fs1, nan=1.0)
+    fs2  = np.nan_to_num(fs2, nan=1.0)
+
+    # x axis format
+    v_start = 0.1
+    v_stop  = 0.3
+    step    = 0.0005
+    num     = int(round((v_stop - v_start) / step))
+    vs      = np.round(np.linspace(v_start, v_start + step * (num - 1), num),4)
+    np.append(vs,0.3)
+
+    xoriginal   = np.linspace(0, len(vs), len(vs)+1)
+    xrescaled   = np.linspace(0.1, 0.3, len(vs)+1)
+    xticks      = [0.1, 0.15, 0.2, 0.25, 0.3]
+    xtick_pos   = [np.argmin(np.abs(xrescaled - val)) for val in xticks]
+    
+    # y axis format
+    t0  = 0.
+    tf  = 150.
+    N   = int(tf/dt1)
+ 
+    yoriginal   = np.linspace(0, len(fs1[:,0]), len(fs1[:,0])+1)
+    yrescaled   = np.linspace(0, tf, len(fs1[:,0])+1)
+    yticks      = [int(0), int(tf*1/5.), int(tf*2/5.), int(tf*3/5.), int(tf*4/5.), int(tf)]
+    ytick_pos   = [np.argmin(np.abs(yrescaled - val)) for val in yticks]
+    
+    # figure
+    plt.figure(figsize=(10, 5))
+
+    plt.minorticks_on()
+    
+    plt.xticks(xtick_pos, xticks)
+    plt.yticks(ytick_pos, yticks)
+   
+    plt.xlim([0,num]) 
+    plt.ylim([0,N/jump])
+
+    plt.xlabel(r'$v_\mathrm{in}$')
+    plt.ylabel(r'$t$')
+    plt.title(f'{moduli1}-{moduli2}')
+    
+    plt.imshow(fs1-fs2, vmin=-1.25, vmax=1.25, aspect='auto', origin='lower',  cmap='Spectral')
+    plt.colorbar()
+    plt.tight_layout()
+    plt.show()
 
 
