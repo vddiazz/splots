@@ -78,7 +78,7 @@ def plot_moduli(moduli_labels:list[str], path:str, model:str, moduli:str, vin:np
         M = [a,da,c1,dc1,c2,dc2]
 
     # time axis
-    T = np.arange(0,len(M[0]),1)
+    T = np.arange(0,len(M[0])*dt,dt)
     
     # plots
     for i,Mi in enumerate(M):
@@ -90,17 +90,10 @@ def plot_moduli(moduli_labels:list[str], path:str, model:str, moduli:str, vin:np
    
     t0 = 0; tf = 150
     N = int(tf/dt)
-    
-    xoriginal = np.linspace(0, N, N+1)
-    xrescaled = np.linspace(0, N*dt, N+1)
-    xticks = [0, int(N*dt*1/5), int(N*dt*2/5), int(N*dt*3/5), int(N*dt*4/5), int(N*dt)]
-    xtick_pos = [np.argmin(np.abs(xrescaled - val)) for val in xticks]
-    plt.minorticks_on()
-    plt.xticks(xtick_pos, xticks)
     plt.xlabel(r"$t$")
 
     # axis limits
-    plt.xlim([0,N+1])
+    plt.xlim([0,tf])
     plt.ylim([-2,12])
 
     # plot
